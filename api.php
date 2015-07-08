@@ -8,7 +8,7 @@ $arr = array();
 
 $response = array(
     'data' => [],
-    'messages' => '',
+    'messages' => 'RALAT: Waktu solat ini adalah anggaran sahaja. Mungkin terdapat perbezaan 3 - 4 minit dengan waktu yang dikeluarkan oleh pihak berkuasa agama negeri. Sila rujuk pihak berkaitan untuk pengesahan.',
 );
 
 $places = [

@@ -33,6 +33,17 @@ function get_docs() {
     return implode("\n", $output);
 }
 
+function prepare_data($date, $endDate, $latitude, $longitude, $timeZone, $prayTime, &$arr) {
+    while ($date < $endDate)
+    {
+        $times = $prayTime->getPrayerTimes($date, $latitude, $longitude, $timeZone);
+        $day = date('M d', $date);
+        array_push($arr, array('today' => $day),array('Subuh' => $times[0]),array('Syuruk' => $times[1]),array('Zuhur' => $times[2]),array('Asar' => $times[3]),array('Terbenam Matahari' => $times[4]),array('Maghrib' => $times[5]),array('Isyak' => $times[6]));
+        $date += 24* 60* 60;  // next day
+    }
+
+}
+
 $place = isset($_GET['place']) ? $_GET['place'] : null;
 if (is_null($place) || $place == '') {
     $response['messages'] = get_docs();
@@ -54,39 +65,19 @@ if(isset($_GET['monthly']) && $_GET['monthly'] != "" && $_GET['monthly'] == 1){
   
     $date = strtotime($year.'-'.$today['mon'].'-1');
     $endDate = strtotime($year.'-'.($today['mon']+1).'-1');
-    while ($date < $endDate)
-    {
-        $times = $prayTime->getPrayerTimes($date, $latitude, $longitude, $timeZone);
-        $day = date('M d', $date);
-        array_push($arr, array('today' => $day),array('Fajr' => $times[0]),array('Sunrise' => $times[1]),array('Dhuhr' => $times[2]),array('Asr' => $times[3]),array('Sunset' => $times[4]),array('Maghrib' => $times[5]),array('Isha' => $times[6]));
-        $date += 24* 60* 60;  // next day
-    }
-
+    prepare_data($date, $endDate, $latitude, $longitude, $timeZone, $prayTime, $arr);
 }
 elseif(isset($_GET['anually']) && $_GET['anually'] != "" && $_GET['anually'] == 1){
 
     $date = strtotime($year.'-1-1');
     $endDate = strtotime(($year+1).'-1-1');
-    while ($date < $endDate)
-    {
-        $times = $prayTime->getPrayerTimes($date, $latitude, $longitude, $timeZone);
-        $day = date('M d', $date);
-        array_push($arr, array('today' => $day),array('Fajr' => $times[0]),array('Sunrise' => $times[1]),array('Dhuhr' => $times[2]),array('Asr' => $times[3]),array('Sunset' => $times[4]),array('Maghrib' => $times[5]),array('Isha' => $times[6]));
-        $date += 24* 60* 60;  // next day
-    }
+    prepare_data($date, $endDate, $latitude, $longitude, $timeZone, $prayTime, $arr);
 }
 else{
     
     $date = strtotime($year.'-'.$today['mon'].'-'.$today['mday']);
     $endDate = strtotime($year.'-'.$today['mon'].'-'.($today['mday']+1));
-    while ($date < $endDate)
-    {
-        $times = $prayTime->getPrayerTimes($date, $latitude, $longitude, $timeZone);
-        $day = date('M d', $date);
-        array_push($arr, array('today' => $day),array('Fajr' => $times[0]),array('Sunrise' => $times[1]),array('Dhuhr' => $times[2]),array('Asr' => $times[3]),array('Sunset' => $times[4]),array('Maghrib' => $times[5]),array('Isha' => $times[6]));
-        $date += 24* 60* 60;  // next day
-    }
-
+    prepare_data($date, $endDate, $latitude, $longitude, $timeZone, $prayTime, $arr);
 }
 
 $response['data'] = $arr;

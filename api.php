@@ -21,13 +21,6 @@ $places = [
 function get_docs() {
     global $places;
     $output = [
-        "Waktu Solat Api Documentation",
-        "Usage:",
-        "For Help - http://localhost/dev/solatapi/api.php",
-        "For Daily - http://localhost/dev/solatapi/api.php?place=[location]",
-        "For Monhtly - http://localhost/dev/solatapi/api.php?place=[location]&monthly=1",
-        "For Anually - http://localhost/dev/solatapi/api.php?place=[location]&anually=1",
-        "Hosting your own api - https://github.com/Treakyidea/solatapi",
         "Available places: " . implode(",", array_keys($places)),
     ];
     return implode("\n", $output);
